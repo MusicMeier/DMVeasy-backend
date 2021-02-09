@@ -4,14 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/firestore": "^4.9.3",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "firebase-admin": "^9.4.2"
+    "firebase": "^8.2.6",
+    "firebase-admin": "^9.4.2",
+    "nodemon": "^2.0.7",
+    "sdk": "^0.5.0"
   }
 }
