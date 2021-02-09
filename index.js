@@ -6,37 +6,20 @@ const PORT = 2021;
 
 const bodyParser = require('body-parser');
 
-const serviceAccount = require('./serviceAccountKey.json')
+const serviceAccount = require('./serviceAccountKey.json');
 
-
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://dmveasy-a82ea-default-rtdb.firebaseio.com/'
 });
 
-const db = admin.database();
-
-const usersRef = db.ref('/users');
-
-usersRef.set({
-  jrisawesome:{
-    dob:"June 23, 1912",
-    full_name: "Alan Turing"
-  },
-  gracehop: {
-    date_of_birth: "December 9, 1906",
-    full_name: "Grace Hopper"
-  }
-});
-
-usersRef.on(
-  "value", (snapshot) => {
-    const result = snapshot.val()
-    console.log(result)
-  }
-)
+const Firestore = require('@google-cloud/firestore');
+const db = new  Firestore({
+  projectId: "dmveasy-a82ea",
+  keyFilename: serviceAccount
+})
 
 app.get('/', (request, response) => {
   response.json({message: "Sup, DMVeasy crew!"})
