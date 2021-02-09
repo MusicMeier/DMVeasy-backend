@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://dmveasy-a82ea-default-rtdb.firebaseio.com/'
+  databaseURL: 'https://dmveasy-a82ea.firebaseio.com/'
 });
 
 const Firestore = require('@google-cloud/firestore');
