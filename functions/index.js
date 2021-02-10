@@ -4,12 +4,18 @@ const app = require('express')();
 
 const admin = require('firebase-admin');
 
-const serviceAccount = require('../serviceAccountKey.json')
+const serviceAccount = require('../serviceAccountKey.json');
+
+const firebase = require('firebase')
+
+const firebaseConfig = require('./utilities/firebaseConfig')
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://dmveasy-a82ea.firebaseio.com/'
 });
+
+firebase.initializeApp(firebaseConfig)
 
 const db = admin.firestore();
 
@@ -57,6 +63,34 @@ exports.getUser = functions.https.onRequest(( request, response ) => {
         }
     });
 });
+
+exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =>{
+    const newUser = {
+        id: request.body.uid,
+        email: request.body.email,
+        password: request.body.password,
+    }
+    console.log(request.body,'here')
+
+    let token;
+
+    db.doc(`/users/${newUser.id}`).get()
+    .then((doc) => {
+        if(doc.exists) {
+            return response.json({ message: 'this user has been created'})
+        } else {
+            return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+        }
+    })
+    .then((data) => {
+        console.log(data, 'data')
+        return data.user.getIdToken()
+        })
+        .then((data) => {
+            console.log(data)
+            userid = data.user.uid
+        })
+    })
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
     functions.logger.info("Hello logs!", {structuredData: true});
