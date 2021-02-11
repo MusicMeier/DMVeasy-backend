@@ -6,7 +6,7 @@ const admin = require('firebase-admin');
 
 const serviceAccount = require('../serviceAccountKey.json');
 
-const firebase = require('firebase')
+const firebase = require('firebase');
 
 const firebaseConfig = require('./utilities/firebaseConfig')
 
@@ -15,7 +15,7 @@ admin.initializeApp({
     databaseURL: 'https://dmveasy-a82ea.firebaseio.com/'
 });
 
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
 const db = admin.firestore();
 
@@ -29,17 +29,6 @@ app.use(bodyParser.json());
 //     projectId: "dmveasy-a82ea",
 //     keyFilename: serviceAccount
 // })
-
-exports.createUser = functions.https.onRequest(( request, response ) => {
-    
-    const newUser = {
-        first: request.body.first
-    };
-
-    db.collection('users').add(newUser);
-
-    response.send("You made a user!");
-});
 
 exports.getUsers = functions.https.onRequest(( request, response ) => {
     const usersRef = db.collection('users');
@@ -70,29 +59,22 @@ exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =
         email: request.body.email,
         password: request.body.password,
     }
-    console.log(request.body,'here')
 
-    let token;
+    let userid;
 
     db.doc(`/users/${newUser.id}`).get()
     .then((doc) => {
         if(doc.exists) {
-            return response.json({ message: 'this user has been created'})
+            return response.json({ message: 'this user has been created' })
         } else {
             return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
         }
     })
     .then((data) => {
-        console.log(data, 'data')
+        userid = data.user.uid
         return data.user.getIdToken()
         })
-        .then((data) => {
-            console.log(data)
-            userid = data.user.uid
-        })
+        .then((token) => {
+            response.send({token: token, userId: userid})
+        }).catch(error => console.error(error))
     })
-
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    functions.logger.info("Hello logs!", {structuredData: true});
-    response.send("Hello from Firebase!");
-});
