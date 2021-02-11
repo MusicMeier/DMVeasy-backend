@@ -22,12 +22,13 @@ firebase.initializeApp(firebaseConfig);
 const db = admin.firestore();
 
 const bodyParser = require('body-parser');
+
+//whats this? -KT
 const { request, response } = require("express");
 
 app.use(bodyParser.json());
-// app.use(cors());
 
-//doesn't like this syntax
+//doesn't like this syntax, probably don't need it?
 // const Firestore = require('@google-cloud/firestore');
 // const db = new Firestore({
 //     projectId: "dmveasy-a82ea",
@@ -58,50 +59,52 @@ exports.getUser = functions.https.onRequest(( request, response ) => {
 });
 
 exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =>{
-    const newUser = {
-        id: request.body.uid,
-        email: request.body.email,
-        password: request.body.password,
-    }
+    cors(request, response, () => {
+        const newUser = {
+            id: request.body.uid,
+            email: request.body.email,
+            password: request.body.password,
+        };
 
-    let userid;
+        let userid;
 
-    db.doc(`/users/${newUser.id}`).get()
-    .then((doc) => {
-        if(doc.exists) {
-            return response.json({ message: 'this user has been created' })
-        } else {
-            return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
-        }
-    })
-    .then((data) => {
-        userid = data.user.uid;
-        return data.user.getIdToken();
+        db.doc(`/users/${newUser.id}`).get()
+        .then((doc) => {
+            if(doc.exists) {
+                return response.json({ message: 'this user has been created' });
+            } else {
+                return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
+            }
         })
+        .then((data) => {
+            userid = data.user.uid;
+            return data.user.getIdToken();
+            })
         .then((token) => {
             response.send({token: token, userId: userid});
         }).catch((error) => {
-            response.send(error)
-        })
+            response.send({errors: error});
+        });
     });
+});
 
-    exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, response) => {
-        cors(request, response, () => {
-            const user = {
-                email: request.body.email,
-                password: request.body.password,
-            }
-                let userId 
-            firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-            .then((userCredential) => {
-                userId = userCredential.user.uid;
-                return userCredential.user.getIdToken();
-            })
-            .then((token) => {
-                response.send({token: token, userId: userId});
-            })
-            .catch((error) => {
-                response.send(error);
-            })
+exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, response) => {
+    cors(request, response, () => {
+        const user = {
+            email: request.body.email,
+            password: request.body.password,
+        }
+        let userId; 
+        firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+        .then((userCredential) => {
+            userId = userCredential.user.uid;
+            return userCredential.user.getIdToken();
+        })
+        .then((token) => {
+            response.send({token: token, userId: userId});
+        })
+        .catch((error) => {
+            response.send({errors: error});
         })
     })
+})
