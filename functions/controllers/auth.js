@@ -1,7 +1,7 @@
 const functions = require("firebase-functions");
-const db = require('../index').db
 const cors = require('cors')({origin: true});
 const firebase = require('firebase');
+const { db } = require('../utilities/admin')
 
 exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =>{
     cors(request, response, () => {
@@ -12,9 +12,10 @@ exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =
         };
 
         let userid;
-
+        
         db.doc(`/users/${newUser.id}`).get()
         .then((doc) => {
+            console.log(doc)
             if(doc.exists) {
                 return response.json({ message: 'this user has been created' });
             } else {
@@ -41,16 +42,28 @@ exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, res
             password: request.body.password,
         }
         let userId; 
+        let currentUser;
+
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then((userCredential) => {
+            currentUser = userCredential.user
             userId = userCredential.user.uid;
             return userCredential.user.getIdToken();
         })
         .then((token) => {
-            response.send({token: token, userId: userId});
+            response.send({token: token, userId: userId, currentUser: currentUser});
         })
         .catch((error) => {
             response.send({errors: error});
         })
+    })
+})
+
+
+exports.signOut = functions.https.onRequest((request, response) => {
+    cors(request, response, () => {
+        firebase.auth().signOut().then( () => {
+            response.send("signout successful")
+        }).catch(error => response.send(error))
     })
 })
