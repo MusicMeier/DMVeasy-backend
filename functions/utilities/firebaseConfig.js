@@ -7,4 +7,4 @@ module.exports = {
     messagingSenderId: "97233910670",
     appId: "1:97233910670:web:6049bc42d744753285c2df",
     measurementId: "G-WVYGV6K3FW"
-    };
+  };
