@@ -3,7 +3,7 @@ const app = require('express')();
 const cors = require('cors')({origin: true});
 const firebase = require('firebase');
 const firebaseConfig = require('./utilities/firebaseConfig');
-const { signInUserWithPasswordAndEmail, signUpWithEmailPassword, getUser } = require('./controllers/auth');
+const { signInUserWithPasswordAndEmail, signUpWithEmailPassword, signOut } = require('./controllers/auth');
 const bodyParser = require('body-parser');
 
 firebase.initializeApp(firebaseConfig);
@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 exports.signUp = signUpWithEmailPassword;
 exports.signIn = signInUserWithPasswordAndEmail;
-exports.getUser = getUser;
+exports.signOut = signOut;
 
 
 

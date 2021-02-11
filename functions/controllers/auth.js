@@ -42,20 +42,16 @@ exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, res
             password: request.body.password,
         }
         let userId; 
+        let currentUser;
+
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then((userCredential) => {
+            currentUser = userCredential.user
             userId = userCredential.user.uid;
             return userCredential.user.getIdToken();
         })
         .then((token) => {
-            response.send({token: token, userId: userId});
-            firebase.auth().onAuthStateChanged( (user) => {
-                if (user) {
-                    console.log("hey")
-                } else {
-                    console.log("loser")
-                }
-            })
+            response.send({token: token, userId: userId, currentUser: currentUser});
         })
         .catch((error) => {
             response.send({errors: error});
@@ -63,12 +59,11 @@ exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, res
     })
 })
 
-exports.getUser = functions.https.onRequest((request, response) => {
+
+exports.signOut = functions.https.onRequest((request, response) => {
     cors(request, response, () => {
-        console.log("hey")
-        firebase.auth().getUserByEmail(request.body.email)
-        .then((userRecord) => {
-            console.log(userRecord)
-        })
+        firebase.auth().signOut().then( () => {
+            response.send("signout successful")
+        }).catch(error => response.send(error))
     })
 })
