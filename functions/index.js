@@ -2,7 +2,7 @@ const functions = require("firebase-functions");
 
 const app = require('express')();
 
-const cors = requre('cors');
+const cors = require('cors');
 
 const admin = require('firebase-admin');
 
@@ -22,6 +22,7 @@ firebase.initializeApp(firebaseConfig);
 const db = admin.firestore();
 
 const bodyParser = require('body-parser');
+const { request, response } = require("express");
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -79,5 +80,26 @@ exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =
         })
         .then((token) => {
             response.send({token: token, userId: userid});
-        }).catch(error => console.error(error));
+        }).catch((error) => {
+            response.send(error)
+        })
     });
+
+    exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, response) => {
+        const user = {
+            email: request.body.email,
+            password: request.body.password,
+        }
+            let userId 
+        firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+        .then((userCredential) => {
+            userId = userCredential.user.uid;
+            return userCredential.user.getIdToken();
+        })
+        .then((token) => {
+            response.send({token: token, userId: userId});
+        })
+        .catch((error) => {
+            response.send(error);
+        })
+    })
