@@ -2,13 +2,15 @@ const functions = require("firebase-functions");
 
 const app = require('express')();
 
+const cors = requre('cors');
+
 const admin = require('firebase-admin');
 
 const serviceAccount = require('../serviceAccountKey.json');
 
 const firebase = require('firebase');
 
-const firebaseConfig = require('./utilities/firebaseConfig')
+const firebaseConfig = require('./utilities/firebaseConfig');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -22,6 +24,7 @@ const db = admin.firestore();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
+app.use(cors());
 
 //doesn't like this syntax
 // const Firestore = require('@google-cloud/firestore');
@@ -71,10 +74,10 @@ exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =
         }
     })
     .then((data) => {
-        userid = data.user.uid
-        return data.user.getIdToken()
+        userid = data.user.uid;
+        return data.user.getIdToken();
         })
         .then((token) => {
-            response.send({token: token, userId: userid})
-        }).catch(error => console.error(error))
-    })
+            response.send({token: token, userId: userid});
+        }).catch(error => console.error(error));
+    });
