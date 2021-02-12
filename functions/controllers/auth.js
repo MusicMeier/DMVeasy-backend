@@ -39,7 +39,9 @@ exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =
 const createUser = (id, email) => {
     
     const newUser = {
-        email: email
+        userInformation: {
+            email: email
+        }
     };
 
     db.collection('users').doc(id).set(newUser);
@@ -69,7 +71,7 @@ exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, res
 })
 
 //find the user from the collections based off the id from the person that is logged in
-exports.getUserInfo = functions.https.onRequest((request, response) => { 
+exports.getUser = functions.https.onRequest((request, response) => { 
     cors(request, response, () => { 
         
         const userId = request.body.userId;
@@ -84,4 +86,28 @@ exports.getUserInfo = functions.https.onRequest((request, response) => {
             }
         }).catch(error => response.send({errors: error}));
     });
+})
+
+exports.updateUser = functions.https.onRequest((request, response) => {
+    cors(request, response, () => {
+
+        const userId = request.body.userId;
+        
+        const userInformation = {}
+
+        for ( let info in request.body ) {
+            if ( info !== "userId") {
+                userInformation[info] = request.body[info]
+            }
+        }
+
+        let userRef = db.collection('users').doc(userId)
+        if ( userRef ) {
+            userRef.update(userInformation)
+        } else {
+            response.send("User not found")
+        }
+
+        response.send("User updated")
+    })
 })
