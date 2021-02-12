@@ -108,6 +108,6 @@ exports.updateUser = functions.https.onRequest((request, response) => {
             response.send("User not found")
         }
 
-        response.send("User updated")
+        response.send("User updated, let me know if you want the userinfo here")
     })
 })
