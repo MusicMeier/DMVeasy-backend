@@ -88,6 +88,7 @@ exports.getUser = functions.https.onRequest((request, response) => {
     });
 })
 
+//will update whatever field you send in the request to a specific user
 exports.updateUser = functions.https.onRequest((request, response) => {
     cors(request, response, () => {
 
