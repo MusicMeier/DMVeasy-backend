@@ -6,7 +6,8 @@ const firebaseConfig = require('./utilities/firebaseConfig');
 const { 
     signInUserWithPasswordAndEmail, 
     signUpWithEmailPassword, 
-    getUserInfo,
+    getUser,
+    updateUser,
     signOut 
 } = require('./controllers/auth');
 const bodyParser = require('body-parser');
@@ -18,8 +19,9 @@ app.use(bodyParser.json());
 
 exports.signUp = signUpWithEmailPassword;
 exports.signIn = signInUserWithPasswordAndEmail;
-exports.signOut = signOut;
-exports.getUserInfo = getUserInfo;
+exports.getUser = getUser;
+exports.updateUser = updateUser;
+// exports.signOut = signOut;
 
 
 
