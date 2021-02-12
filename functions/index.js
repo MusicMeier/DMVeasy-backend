@@ -23,6 +23,26 @@ exports.getUser = getUser;
 exports.updateUser = updateUser;
 // exports.signOut = signOut;
 
+const { Storage } = require('@google-cloud/storage');
+
+const storage = new Storage();
+
+exports.upload = functions.https.onRequest((request, response) => {
+    cors(request, response, () => {
+
+        let userId = request.body.userId
+        let folder = request.body.folder
+        let image = request.body.image
+        
+        storage.bucket('dmveasy-a82ea.appspot.com/').upload(image, {
+        destination: `${folder}/${userId}`,
+        metadata: {
+            cacheControl: 'public, max-age=31536000',
+        },
+    });
+        response.send("File uploaded")
+    })
+})
 
 
 
