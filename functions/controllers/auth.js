@@ -1,7 +1,7 @@
 const functions = require("firebase-functions");
 const cors = require('cors')({origin: true});
 const firebase = require('firebase');
-const { db } = require('../utilities/admin')
+const { db } = require('../utilities/admin');
 
 exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =>{
     cors(request, response, () => {
@@ -11,7 +11,7 @@ exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =
             password: request.body.password,
         };
 
-        let userid;
+        let userId;
         
         db.doc(`/users/${newUser.id}`).get()
         .then((doc) => {
@@ -23,47 +23,65 @@ exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =
             }
         })
         .then((data) => {
-            console.log(data, "data")
-            userid = data.user.uid;
+            userId = data.user.uid;
+            createUser(userId, newUser.email);
             return data.user.getIdToken();
             })
         .then((token) => {
-            response.send({token: token, userId: userid});
+            response.send({token: token, userId: userId});
         }).catch((error) => {
             response.send({errors: error});
         });
     });
 });
 
+//inserts the user into the users collection upon auth creation
+const createUser = (id, email) => {
+    
+    const newUser = {
+        email: email
+    };
+
+    db.collection('users').doc(id).set(newUser);
+}
+
 exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, response) => {
     cors(request, response, () => {
         const user = {
             email: request.body.email,
             password: request.body.password,
-        }
+        };
+
         let userId; 
-        let currentUser;
 
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then((userCredential) => {
-            currentUser = userCredential.user
             userId = userCredential.user.uid;
             return userCredential.user.getIdToken();
         })
         .then((token) => {
-            response.send({token: token, userId: userId, currentUser: currentUser});
+            response.send({token: token, userId: userId});
         })
         .catch((error) => {
             response.send({errors: error});
-        })
-    })
+        });
+    });
 })
 
+//find the user from the collections based off the id from the person that is logged in
+exports.getUserInfo = functions.https.onRequest((request, response) => { 
+    cors(request, response, () => { 
+        
+        const userId = request.body.userId;
 
-exports.signOut = functions.https.onRequest((request, response) => {
-    cors(request, response, () => {
-        firebase.auth().signOut().then( () => {
-            response.send("signout successful")
-        }).catch(error => response.send(error))
-    })
+        const userRef = db.collection('users').doc(userId);
+        userRef.get()
+        .then(snapshot => {
+            if (snapshot.exists) {
+                response.send(snapshot.data())
+            } else {
+                response.send("User not found")
+            }
+        }).catch(error => response.send({errors: error}));
+    });
 })
