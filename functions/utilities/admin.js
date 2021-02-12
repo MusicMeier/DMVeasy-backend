@@ -3,7 +3,7 @@ const serviceAccount = require('../../serviceAccountKey.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://dmveasy-a82ea.firebaseio.com/'
+    databaseURL: 'https://dmveasy-a82ea.firebaseio.com/',
 });
 
 const db = admin.firestore();

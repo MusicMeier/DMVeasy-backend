@@ -15,7 +15,6 @@ exports.signUpWithEmailPassword = functions.https.onRequest((request,response) =
         
         db.doc(`/users/${newUser.id}`).get()
         .then((doc) => {
-            console.log(doc)
             if(doc.exists) {
                 return response.json({ message: 'this user has been created' });
             } else {
@@ -45,7 +44,7 @@ const createUser = (id, email) => {
     };
 
     db.collection('users').doc(id).set(newUser);
-}
+};
 
 exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, response) => {
     cors(request, response, () => {
@@ -68,7 +67,7 @@ exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, res
             response.send({errors: error});
         });
     });
-})
+});
 
 //find the user from the collections based off the id from the person that is logged in
 exports.getUser = functions.https.onRequest((request, response) => { 
@@ -86,7 +85,7 @@ exports.getUser = functions.https.onRequest((request, response) => {
             }
         }).catch(error => response.send({errors: error}));
     });
-})
+});
 
 //will update whatever field you send in the request to a specific user
 exports.updateUser = functions.https.onRequest((request, response) => {
@@ -94,21 +93,21 @@ exports.updateUser = functions.https.onRequest((request, response) => {
 
         const userId = request.body.userId;
         
-        const userInformation = {}
+        const userInformation = {};
 
         for ( let info in request.body ) {
             if ( info !== "userId") {
-                userInformation[info] = request.body[info]
-            }
-        }
+                userInformation[info] = request.body[info];
+            };
+        };
 
-        let userRef = db.collection('users').doc(userId)
+        let userRef = db.collection('users').doc(userId);
         if ( userRef ) {
-            userRef.update(userInformation)
+            userRef.update(userInformation);
         } else {
-            response.send("User not found")
-        }
+            response.send("User not found");
+        };
 
-        response.send("User updated, let me know if you want the userinfo here")
-    })
-})
+        response.send("User updated, let me know if you want the userinfo here");
+    });
+});
