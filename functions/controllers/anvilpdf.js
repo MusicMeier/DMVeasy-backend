@@ -77,3 +77,4 @@ const {
 } = await anvilClient.fillPDF(pdfTemplateID, renewalFormData)
 console.log(statusCode) // 200
 fs.writeFileSync('output.pdf', data, { encoding: null })
+
