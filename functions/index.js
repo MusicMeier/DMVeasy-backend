@@ -7,8 +7,7 @@ const {
     signInUserWithPasswordAndEmail, 
     signUpWithEmailPassword, 
     getUser,
-    updateUser,
-    signOut 
+    updateUser
 } = require('./controllers/auth');
 
 const bodyParser = require('body-parser');
@@ -98,29 +97,7 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
     })
 })
 
-//this function will pull the image and download it to the users computer
-// exports.getImage = functions.https.onRequest((request, response) => {
-//     cors(request, response, async () => {
-
-//         let folder = request.body.folder
-//         let userId = request.body.userId
-
-            // const options = {
-//                 //this is where the download will be saved
-//                 destination: `./uploads/${userId}.png`
-//             };
-
-//             await storage.bucket('dmveasy-a82ea.appspot.com').file(`${folder}/${userId}`).download(options)
-
-//         }
-
-//         download().catch(console.error)
-
-//         response.send("Gotcha image")
-//     })
-// })
-
-//this sends back a signedURL to get the image
+//this sends back a signedURL of the image
 exports.getImage = functions.https.onRequest((request, response) => {
     cors(request, response, async () => {
 
