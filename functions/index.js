@@ -43,17 +43,17 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
         const tmpdir = os.tmpdir();
         const fields = {};
         const uploads = {};
-
+        
         busboy.on('field', (fieldname, val) => {
             console.log(`processed field true ${fieldname}: ${val}`);
             fields[fieldname] = val;
         });
-
+        
         const fileWrites = [];
         let mimeType;
 
-        busboy.on('file', (fieldname, file, filename, mimetype) => {
-            
+        busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+            console.log(filename)
             console.log(`processed file ${filename}`)
             const filepath = path.join(tmpdir, filename);
             mimeType = mimetype;
@@ -71,17 +71,18 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
             });
             fileWrites.push(promise);
         });
-
+        
         busboy.on('finish', async () => {
             await Promise.all(fileWrites)
             let image; 
+            
             for (const file in uploads) {
                 image = uploads[file];
             }
 
             let userId = fields.userId;
             let folder = fields.folder;
-        
+           
             storage.bucket('dmveasy-a82ea.appspot.com').upload(image, {
                 destination: `${folder}/${userId}`,
                 metadata: {
@@ -90,8 +91,9 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
                         contentType: mimeType
                     }
                 },
-            }).catch(error => console.error(error));
-            response.send();
+            }).catch(error => response.send(JSON.stringify({errors: error})));
+
+            response.send(JSON.stringify({message: "Image Uploaded"}))
         })
         busboy.end(request.rawBody);
     })
