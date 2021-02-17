@@ -18,14 +18,9 @@ const Anvil = require('@anvilco/anvil');
 
 const pdfTemplateID = '2H1hdiXvYLA1abriziAV'; 
 
-
-
 app.use(cors())
 
 app.options('*', cors())
-
-
-// const anvil = require('./functions/controllers/anvilpdf')
 
 const bodyParser = require('body-parser')
 
@@ -47,7 +42,6 @@ app.post('/anvil', (request, response) => {
     "data": {
     "ApplicantName": {
         "firstName": applicantName.firstName,
-        // 'dob': apllicantName.dob,
         "mi": applicantName.mi,
         "lastName": applicantName.lastName
     },
@@ -58,8 +52,8 @@ app.post('/anvil', (request, response) => {
     "ApplicantEyeColor": formData.ApplicantEyeColor,
     "DLIDNumber": formData.DLIDNumber,
     "DOBMonth": formData.DOBMonth,
-    "no": true,
-    "yes": true,
+    "no": false,
+    "yes": false,
     "COAddress": {
         "street1": coAddress.street1,
         "city": coAddress.city,
@@ -76,12 +70,10 @@ app.post('/anvil', (request, response) => {
     },
     "Name": {
         "firstName": name.firstName,
-        // 'dob': name.dob,
-        "mi": name.mi,
         "lastName": name.lastName
     },
     "licenseNumber": formData.licenseNumber,
-    "DOE": formData.Doe,
+    "DOE": formData.DOE,
     "DateToday": formData.DateToday,
     "OptometristLicenseNumber": formData.OptometristLicenseNumber,
     "OptometristName": formData.OptometristName,
@@ -110,6 +102,30 @@ app.post('/anvil', (request, response) => {
     "DOBYear": formData.DOBYear
     }
   }
+
+  const anvilClient = new Anvil({ apiKey })
+  async function getPDF() {
+    const {
+      statusCode,
+      data
+    } = await anvilClient.fillPDF(pdfTemplateID, renewelData)
+    let FormData = require('form-data')
+    let formData = new FormData()
+    formData.append('image', data, {filename: 'filled.pdf'})
+    //this can be hardcoded as pdf or whatever folder name we want
+    formData.append('folder', "pdf")
+    //need to have the userId sent in the request to make dynamic
+    formData.append('userId', "V6Yf3Dn3wvSEzHh9HCVBpjH33f02")
+    fetch('http://localhost:5001/dmveasy-a82ea/us-central1/uploadImage', {
+      method: "POST",
+      headers: {},
+      body: formData
+    })
+    .then(response => response.json())
+    .then(result => response.send(result))
+    .catch(error => console.error("error", error))
+  }
+  getPDF()
 
   fetch(
     "https://app.useanvil.com/api/v1/fill/2H1hdiXvYLA1abriziAV.pdf"
