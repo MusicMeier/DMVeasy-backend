@@ -16,7 +16,7 @@ const fs = require('fs');
 
 const Anvil = require('@anvilco/anvil');
 
-const pdfTemplateID = '2H1hdiXvYLA1abriziAV'; 
+const pdfTemplateID = 'vXnoWI7yAjDEF9ABmzxK'; 
 
 app.use(cors())
 
@@ -26,89 +26,82 @@ const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
 
-app.post('/anvil', (request, response) => {
-  // console.log(request.body, 'this is ')
+app.post('/anvil', async (request, response) => {
   const formData = request.body.formData;
-  const applicantName = request.body.ApplicantName;
-  const coAddress = request.body.COAddress;
-  const coMailing = request.body.COMailing;
-  const name = request.body.Name;
-  const optometristAddress = request.body.OptometristAddress;
-  const optometristPhone = request.body.OptometristPhone
+  const applicantFullName = request.body.applicantFullName;
+  const applicantName = request.body.applicantName
+  const residentAddress = request.body.residentAddress;
+  const mailingAddress = request.body.mailingAddress;
+  const optometristAddress = request.body.optometristAddress;
+
   const renewelData = {
     "title": "DMV License Renewal",
     "fontSize": 10,
     "textColor": "#333333",
     "data": {
-    "ApplicantName": {
+    "applicantName": {
         "firstName": applicantName.firstName,
         "mi": applicantName.mi,
         "lastName": applicantName.lastName
     },
-    "Suffix": formData.Suffix,
-    "ApplicantHeight": formData.ApplicantHeight,
-    "ApplicantWeight": formData.ApplicantWeight,
-    "ApplicantHairColor": formData.ApplicantHairColor,
-    "ApplicantEyeColor": formData.ApplicantEyeColor,
-    "DLIDNumber": formData.DLIDNumber,
-    "DOBMonth": formData.DOBMonth,
-    "no": false,
-    "yes": false,
-    "COAddress": {
-        "street1": coAddress.street1,
-        "city": coAddress.city,
-        "state": coAddress.state,
-        "zip": coAddress.zip,
-        "country": coAddress.country
+    "applicantSuffix": formData.applicantSuffix,
+    "applicantHeight": formData.applicantHeight,
+    "applicantWeight": formData.applicantWeight,
+    "applicantHairColor": formData.applicantHairColor,
+    "applicantEyeColor": formData.applicantEyeColor,
+    "DLIDnumber": formData.DLIDnumber,
+    "applicantDOBMonth": formData.applicantDOBMonth,
+    "applicantDOBDay": formData.applicantDOBDay,
+    "applicantDOBYear": formData.applicantDOBYear,
+    "currentMotorcyleEndorse": '',
+    "retainMotorcyleEndorse": '',
+    "drivingPrivilege": '',
+    "outOfStateLicense": '',
+    "outOfStateLicenseText": '',
+    "drivingAbility": '',
+    "residentAddress": {
+        "street1": residentAddress.street1,
+        "city": residentAddress.city,
+        "state": residentAddress.state,
+        "zip": residentAddress.zip,
+        "country": residentAddress.country
     },
-    "COMailing": {
-        "street1": coMailing.street1,
-        "city": coMailing.city,
-        "state": coMailing.state,
-        "zip": coMailing.zip,
-        "country": coMailing.country
+    "mailingAddress": {
+        "street1": mailingAddress.street1,
+        "city": mailingAddress.city,
+        "state": mailingAddress.state,
+        "zip": mailingAddress.zip,
+        "country": mailingAddress.country
     },
-    "Name": {
-        "firstName": name.firstName,
-        "lastName": name.lastName
+    "applicantFullName": {
+        "firstName": applicantFullName.firstName,
+        "mi": applicantFullName.mi,
+        "lastName": applicantFullName.lastName
     },
-    "licenseNumber": formData.licenseNumber,
-    "DOE": formData.DOE,
-    "DateToday": formData.DateToday,
-    "OptometristLicenseNumber": formData.OptometristLicenseNumber,
-    "OptometristName": formData.OptometristName,
-    "OptometristTitle": formData.OptometristTitle,
-    "OptometristAddress": {
+    "applicantDLIDNumber": formData.applicantDLIDNumber,
+    "visionCheck": '',
+    "optometristEvalDate": formData.optometristEvalDate,
+    "optometristSignDate": formData.optometristEvalDate,
+    "optometristLicenseNumber": formData.optometristLicenseNumber,
+    "optometristTitle": formData.optometristTitle,
+    "optometristAddress": {
         "street1": optometristAddress.street1,
         "city": optometristAddress.city,
         "state": optometristAddress.state,
         "zip": optometristAddress.zip,
         "country": optometristAddress.country
     },
-    "OptometristPhone": {
-        "num": optometristPhone.num,
-        "region": optometristPhone.region,
-        "baseRegion": optometristPhone.baseRegion
-    },
-    "DrivingPrivilegeNo": formData.DrivingPrivilegeNo,
-    "DrivingPrivilegeYes": formData.DrivingPrivilegeYes,
-    "OtherStateNo": formData.OtherStateNo,
-    "OtherStateYes": formData.OtherStateYes,
-    "SafetyNo": formData.SafetyNo,
-    "SafetyYes": formData.SafetyYes,
-    "Required": formData.Required,
-    "Not": formData.Not,
-    "DOBDay": formData.DOBDay,
-    "DOBYear": formData.DOBYear
+    "optPhoneAreaCode": formData.optPhoneAreaCode,
+    "optPhone": formData.optPhone, 
     }
   }
-
+  console.log('second log',request.body.residentAddress.street1)
   const anvilClient = new Anvil({ apiKey })
-  async function getPDF() {
-    const {
-      statusCode,
-      data
-    } = await anvilClient.fillPDF(pdfTemplateID, renewelData)
+  const {
+    statusCode,
+    data
+  } = await anvilClient.fillPDF(pdfTemplateID, renewelData)
+  if ( statusCode === 200 ) {
     let FormData = require('form-data')
     let formData = new FormData()
     formData.append('image', data, {filename: 'filled.pdf'})
@@ -123,36 +116,12 @@ app.post('/anvil', (request, response) => {
     })
     .then(response => response.json())
     .then(result => response.send(result))
-    .catch(error => console.error("error", error))
-  }
-  getPDF()
+    .catch(error => response.send({errors: error}))
+  } 
+})  
 
-  fetch(
-    "https://app.useanvil.com/api/v1/fill/2H1hdiXvYLA1abriziAV.pdf"
-,{
-  method: 'POST',
-  body: renewelData,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Basic ${apiKey}`,
-    // 'Accept': 'application/pdf'
-  },
-})
-.then(response => console.log('response.body here',response.body))
-  .catch((err) => console.log(err));
-})
-// .then(response => {
-  //   const anvilClient = new Anvil({ apiKey })
-  
-  //   const { data } = anvilClient.fillPDF(pdfTemplateID, response.body) 
-  //   fs.writeFileSync('output.pdf', data, { encoding: null })
-  // })
-  
-  // .then((data) => console.log(data))
 
-// const data = JSON.stringify({
-//   todo: 'Buy the milk'
-// })
+
 
 // const options = {
 //   hostname: 'whatever.com',
