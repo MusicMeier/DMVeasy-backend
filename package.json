@@ -5,17 +5,23 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@anvilco/anvil": "^2.6.0",
     "@google-cloud/firestore": "^4.9.3",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase": "^8.2.6",
     "firebase-admin": "^9.4.2",
+    "formdata-node": "^2.4.0",
+    "fs": "0.0.1-security",
+    "node-fetch": "^2.6.1",
     "nodemon": "^2.0.7",
     "sdk": "^0.5.0"
   }
