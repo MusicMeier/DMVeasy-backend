@@ -123,7 +123,7 @@ app.post('/anvil', async (request, response) => {
     //this can be hardcoded as pdf or whatever folder name we want
     formData.append('folder', "pdf")
     //need to have the userId sent in the request to make dynamic
-    formData.append('userId', "T1t7duwx5dZbGY1Kkm7XGsF3DaJ2")
+    formData.append('userId', request.body.userId)
     fetch('http://localhost:5001/dmveasy-a82ea/us-central1/uploadImage', {
       method: "POST",
       headers: {},
