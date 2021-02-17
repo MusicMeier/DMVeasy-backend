@@ -12,7 +12,7 @@ const apiKey = process.env.API_KEY
 
 const Anvil = require('@anvilco/anvil');
 
-const pdfTemplateID = '2H1hdiXvYLA1abriziAV'; 
+const pdfTemplateID = 'vXnoWI7yAjDEF9ABmzxK'; 
 
 app.use(cors())
 
@@ -123,7 +123,7 @@ app.post('/anvil', async (request, response) => {
     //this can be hardcoded as pdf or whatever folder name we want
     formData.append('folder', "pdf")
     //need to have the userId sent in the request to make dynamic
-    formData.append('userId', "V6Yf3Dn3wvSEzHh9HCVBpjH33f02")
+    formData.append('userId', "T1t7duwx5dZbGY1Kkm7XGsF3DaJ2")
     fetch('http://localhost:5001/dmveasy-a82ea/us-central1/uploadImage', {
       method: "POST",
       headers: {},
