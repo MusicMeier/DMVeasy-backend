@@ -70,11 +70,26 @@ const renewalFormData = {
     "DOBYear": 12345
     }
 }
-const anvilClient = new Anvil({ apiKey })
-const {
-    statusCode,
-    data
-} = await anvilClient.fillPDF(pdfTemplateID, renewalFormData)
-console.log(statusCode) // 200
-fs.writeFileSync('output.pdf', data, { encoding: null })
+// const anvilClient = new Anvil({ apiKey })
+// const {
+//     statusCode,
+//     data
+// } = await anvilClient.fillPDF(pdfTemplateID, renewalFormData)
+// console.log(statusCode) // 200
+// fs.writeFileSync('output.pdf', data, { encoding: null })
+
+exports.createAnvilPDF = functions.https.onRequest((request, response) => {
+    console.log('request, yup', request, response)
+    cors(request, response, () => {
+      async () => {
+        const anvilClient = new Anvil({ apiKey })
+        const {
+          statusCode,
+          data
+        } = await anvilClient.fillPDF(pdfTemplateID, renewalFormData)
+        console.log(statusCode) // 200
+        fs.writeFileSync('output.pdf', data, { encoding: null })
+      }
+    })
+  })
 
