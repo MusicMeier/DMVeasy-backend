@@ -4,9 +4,9 @@ DMVeasy api is a node server set up to allow data transfer to Anvils API in orde
 middle man for creating all of our cloud functions for Firebase.
 
 # Table Of Contents 
-- [Description](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#description)
-- [Example Code](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#example-code)
-- [Technology Used](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#technology-used)
+- [Description](https://github.com/MusicMeier/DMVeasy-backend#description)
+- [Example Code](https://github.com/MusicMeier/DMVeasy-backend#example-code)
+- [Technology Used](https://github.com/MusicMeier/DMVeasy-backend#technology-used)
 - [Setting up for the Application](https://github.com/ktrahan2/spacey-bois-backend/tree/main#setting-up-for-the-application)
 - [Main Features](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#main-features)
 - [Features in Progress](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#features-in-progress)
@@ -27,6 +27,8 @@ middle man for creating all of our cloud functions for Firebase.
 - Firestore
 - Firebase Auth
 - Cloud Functions
+
+## Setting up to run locally
 
 ## Main Features
 
