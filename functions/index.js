@@ -31,7 +31,7 @@ exports.updateUser = updateUser;
 const { Storage } = require('@google-cloud/storage');
 
 const storage = new Storage({
-    keyFilename: '../serviceAccountKey.json'
+    keyFilename: './serviceAccountKey.json'
 });
 
 exports.uploadImage = functions.https.onRequest((request, response) => {
