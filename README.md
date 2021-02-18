@@ -15,10 +15,37 @@ middle man for creating all of our cloud functions for Firebase.
 
 ## Description
 
+This API is fullfilling all the needs of saving the documentation needed in order to renew a drivers license. This was intended to be a serverless database but we needed the node server in order to run our request to Anvils API to generate PDFs. There is one express route setup to receive all the information that goes into the PDF then send that data to Anvil, which returns raw binary. The server then is able to take the raw binary and upload it as a PDF to Firebase Storage.
 
+The other functionality written into the codebase mostly sets up the Cloud functions. With these functions you can upload and get images from Firebase Storage. You can also signin/up users through Firebase Authentication. Finally you can update the users collection in the Firestore to keep track of any additional information about a specific user that you need.
 
 ## Example Code 
+ This function allows you to dynamically update a user in the users collection as needed. 
+```
+  exports.updateUser = functions.https.onRequest((request, response) => {
+    cors(request, response, () => {
 
+        const userId = request.body.userId;
+        
+        const userInformation = {};
+
+        for ( let info in request.body ) {
+            if ( info !== "userId") {
+                userInformation[info] = request.body[info];
+            };
+        };
+
+        let userRef = db.collection('users').doc(userId);
+        if ( userRef ) {
+            userRef.update(userInformation);
+        } else {
+            response.send("User not found");
+        };
+
+        response.send("User updated");
+    });
+});
+```
 
 ## Technology Used
 
@@ -39,10 +66,12 @@ then run `firebase serve` to start the firebase server
 ## Main Features
 
 - Holds functionality for cloud functions
+- Upload files to Firebase Storage
+- Authenticate users through Firebase Auth
+- Store user data in Firestore
+- Route set up to handle talking with Anvil API in order to generate filled PDFs
 
 ## Features in Progress
-
-
 
 ## Contact Information
 
