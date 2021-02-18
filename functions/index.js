@@ -53,7 +53,7 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
         let mimeType;
 
         busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-            console.log(filename)
+            
             console.log(`processed file ${filename}`)
             const filepath = path.join(tmpdir, filename);
             mimeType = mimetype;

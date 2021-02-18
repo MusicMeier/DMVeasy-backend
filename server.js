@@ -1,7 +1,5 @@
 const app = require('express')();
 
-const admin = require('firebase-admin');
-
 const PORT = 2021;
 
 const fetch = require('node-fetch')
@@ -11,8 +9,6 @@ const cors = require('cors')
 const env = require('dotenv').config()
 
 const apiKey = process.env.API_KEY
-
-const fs = require('fs');
 
 const Anvil = require('@anvilco/anvil');
 
@@ -26,7 +22,14 @@ const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
 
+app.get('/', (request, response) => {
+  response.json({message: "Sup, DMVeasy crew!"})
+});
+
+app.listen(PORT, () => console.log(`listening on port: ${PORT}`));
+
 app.post('/anvil', async (request, response) => {
+
   const formData = request.body.formData;
   const applicantFullName = request.body.applicantFullName;
   const applicantName = request.body.applicantName
@@ -95,7 +98,7 @@ app.post('/anvil', async (request, response) => {
     "optPhone": formData.optPhone, 
     }
   }
-  console.log('second log',request.body.residentAddress.street1)
+  
   const anvilClient = new Anvil({ apiKey })
   const {
     statusCode,
@@ -108,7 +111,7 @@ app.post('/anvil', async (request, response) => {
     //this can be hardcoded as pdf or whatever folder name we want
     formData.append('folder', "pdf")
     //need to have the userId sent in the request to make dynamic
-    formData.append('userId', "V6Yf3Dn3wvSEzHh9HCVBpjH33f02")
+    formData.append('userId', request.body.userId)
     fetch('http://localhost:5001/dmveasy-a82ea/us-central1/uploadImage', {
       method: "POST",
       headers: {},
@@ -122,102 +125,5 @@ app.post('/anvil', async (request, response) => {
 
 
 
-
-// const options = {
-//   hostname: 'whatever.com',
-//   port: 443,
-//   path: '/todos',
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Content-Length': data.length
-//   }
-// }
-
-// const req = https.request(options, res => {
-//   console.log(`statusCode: ${res.statusCode}`)
-
-//   res.on('data', d => {
-//     process.stdout.write(d)
-//   })
-// })
-
-// req.on('error', error => {
-//   console.error(error)
-// })
-
-// req.write(data)
-// req.end()
-
-// const functions = require('firebase-functions');
-
-// exports.getUsers = functions.https.onRequest((request, response) => {
-//   admin.firestore().collection('users').get()
-//   .then(data => response.json())
-// });
-
-// const bodyParser = require('body-parser');
-
-// const serviceAccount = require('./serviceAccountKey.json')
-
-// const Firestore = require('@google-cloud/firestore');
-// const db = new Firestore({
-//   projectId: "dmveasy-a82ea",
-//   keyFilename: serviceAccount
-// })
-
-// app.use(bodyParser.json())
-
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: 'https://dmveasy-a82ea-default-rtdb.firebaseio.com/'
-// });
-
-
-
-
-
-
-
-
-// const usersRef = db.collection('users');
-
-// const snapshot = await db.collection('users').get();
-// snapshot.forEach((doc) => {
-//   console.log(doc.id, '=>', doc.data());
-// });
-
-// async function quickstartAddData(){
-
-//   const kyleRef = db.collection('users').doc('kyle trahan');
-  
-//   await kyleRef.set({
-//     first: 'kyle',
-//     last: 'Trahan',
-//     age: 31,
-//     birthPlace: 'California'
-//   });
-  
-  // const snapshot = db.collection('users').get()
-  //   .then(response => console.log(response.json()))
-  
-  // console.log(snapshot,'here')
-  // const snapshot = await db.collection('users').get();
-  // snapshot.forEach((doc) => {
-  //   console.log(doc.id, '=>', doc.data());
-  // });
-// }
-// quickstartAddData()
-
-
-
-app.get('/', (request, response) => {
-  response.json({message: "Sup, DMVeasy crew!"})
-});
-// app.get('/anvilForm', (request, response) => {
-//   response.json({message: "Sup, DMVeasy crew!"})
-// });
-
-app.listen(PORT, () => console.log(`listening on port: ${PORT}`));
 
 
