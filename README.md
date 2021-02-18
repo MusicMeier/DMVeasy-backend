@@ -78,10 +78,10 @@ then run `firebase serve` to start the firebase server
 
 ## Contact Information
 
-[Tiffany Kanjanabout](https://www.linkedin.com/in/tiffany-kanjanabout).(space, space)
-[Junior Medina](https://www.linkedin.com/in/jrmedina1412/)
-[Music Meier](https://www.linkedin.com/in/musicmeier/)
-[Kyle Trahan](https://www.linkedin.com/in/kyletrahan/)
+- [Tiffany Kanjanabout](https://www.linkedin.com/in/tiffany-kanjanabout)
+- [Junior Medina](https://www.linkedin.com/in/jrmedina1412/)
+- [Music Meier](https://www.linkedin.com/in/musicmeier/)
+- [Kyle Trahan](https://www.linkedin.com/in/kyletrahan/)
 
 ## Link to Frontend Repo
 https://github.com/sydneygold/dmveasy-frontend
