@@ -1,7 +1,6 @@
 # DMVeasy-api
 
-DMVeasy api is a node server set up to allow data transfer to Anvils API in order to generate a PDF based off the data sent from the frontend. Also acts as the 
-middle man for creating all of our cloud functions for Firebase.
+Welcome to DMVeasy, the newest way to make your day a little easier. It’s an easy way to make sure all your paperwork is in order before heading to the DMV! All you have to do is sign up, submit photos of all your required documents and fill out one form. After you’ve uploaded all of this information a DMV employee will make sure everything is in order before approving your appointment. Never get sent home for more paperwork from the DMV again!
 
 # Table Of Contents 
 - [Description](https://github.com/MusicMeier/DMVeasy-backend#description)
@@ -106,8 +105,8 @@ then run `firebase serve` to start the firebase server
 
 ## Features in Progress
 
-- Deploy all cloud functions
-- 
+- Create special access for DMV employee
+- Grant Access to users accounts by DMV employee accounts
 
 ## Contact Information
 
