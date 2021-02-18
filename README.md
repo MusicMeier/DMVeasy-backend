@@ -105,8 +105,7 @@ then run `firebase serve` to start the firebase server
 
 ## Features in Progress
 
-- Create special access for DMV employee
-- Grant Access to users accounts by DMV employee accounts
+- Create special access for DMV employees
 
 ## Contact Information
 
