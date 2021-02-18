@@ -1,6 +1,6 @@
 const app = require('express')();
 
-const PORT = 2021;
+const PORT = process.env.PORT || 2021 ;
 
 const fetch = require('node-fetch')
 
@@ -29,7 +29,7 @@ app.get('/', (request, response) => {
 app.listen(PORT, () => console.log(`listening on port: ${PORT}`));
 
 app.post('/anvil', async (request, response) => {
-
+  
   const formData = request.body.formData;
   const applicantFullName = request.body.applicantFullName;
   const applicantName = request.body.applicantName
@@ -112,7 +112,7 @@ app.post('/anvil', async (request, response) => {
     formData.append('folder', "pdf")
     //need to have the userId sent in the request to make dynamic
     formData.append('userId', request.body.userId)
-    fetch('http://localhost:5001/dmveasy-a82ea/us-central1/uploadImage', {
+    fetch('https://us-central1-dmveasy-a82ea.cloudfunctions.net/uploadImage', {
       method: "POST",
       headers: {},
       body: formData
