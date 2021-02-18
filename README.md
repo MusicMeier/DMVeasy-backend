@@ -7,11 +7,11 @@ middle man for creating all of our cloud functions for Firebase.
 - [Description](https://github.com/MusicMeier/DMVeasy-backend#description)
 - [Example Code](https://github.com/MusicMeier/DMVeasy-backend#example-code)
 - [Technology Used](https://github.com/MusicMeier/DMVeasy-backend#technology-used)
-- [Setting up for the Application](https://github.com/ktrahan2/spacey-bois-backend/tree/main#setting-up-for-the-application)
-- [Main Features](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#main-features)
-- [Features in Progress](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#features-in-progress)
-- [Contact Information](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#contact-information)
-- [Link to Frontend Repo](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#link-to-frontend-repo)
+- [Setting up for the Application](https://github.com/MusicMeier/DMVeasy-backend#setting-up-to-run-locally)
+- [Main Features](https://github.com/MusicMeier/DMVeasy-backend#main-features)
+- [Features in Progress](https://github.com/MusicMeier/DMVeasy-backend#features-in-progress)
+- [Contact Information](https://github.com/MusicMeier/DMVeasy-backend#contact-information)
+- [Link to Frontend Repo](https://github.com/MusicMeier/DMVeasy-backend#link-to-frontend-repo)
 
 ## Description
 
@@ -30,6 +30,8 @@ middle man for creating all of our cloud functions for Firebase.
 
 ## Setting up to run locally
 
+run `npm install`
+
 ## Main Features
 
 - Holds functionality for cloud functions
@@ -43,7 +45,6 @@ middle man for creating all of our cloud functions for Firebase.
 [Kyle Trahan](https://www.linkedin.com/in/kyle-trahan-8384678b/)
 
 ## Link to Frontend Repo
-https://github.com/ktrahan2/scavenger-hunt-frontend
-
+https://github.com/sydneygold/dmveasy-frontend
 
 
