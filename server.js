@@ -1,6 +1,6 @@
 const app = require('express')();
 
-const PORT = 2021 || process.env.PORT;
+const PORT = process.env.PORT || 2021 ;
 
 const fetch = require('node-fetch')
 
