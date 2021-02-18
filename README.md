@@ -32,6 +32,10 @@ middle man for creating all of our cloud functions for Firebase.
 
 run `npm install`
 
+then to start the node server with nodemon `npm start`
+
+then run `firebase serve` to start the firebase server
+
 ## Main Features
 
 - Holds functionality for cloud functions
