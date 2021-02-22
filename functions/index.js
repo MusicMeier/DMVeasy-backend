@@ -1,3 +1,5 @@
+//file that firebase deploy looks for cloud functions
+
 const { 
     signInUserWithPasswordAndEmail, 
     signUpWithEmailPassword, 

@@ -1,16 +1,16 @@
 const app = require('express')();
-const PORT = process.env.PORT || 2021 ;
-const fetch = require('node-fetch')
-const cors = require('cors')
-const env = require('dotenv').config()
+const PORT = process.env.PORT || 2021;
+const fetch = require('node-fetch');
+const cors = require('cors');
+const env = require('dotenv').config();
 const apiKey = process.env.API_KEY
 const Anvil = require('@anvilco/anvil');
 const pdfTemplateID = 'vXnoWI7yAjDEF9ABmzxK'; 
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
-app.use(cors())
-app.options('*', cors())
-app.use(bodyParser.json())
+app.use(cors());
+app.options('*', cors());
+app.use(bodyParser.json());
 
 app.listen(PORT, () => console.log(`listening on port: ${PORT}`));
 
@@ -87,20 +87,20 @@ app.post('/anvil', async (request, response) => {
     "optPhoneAreaCode": formData.optPhoneAreaCode,
     "optPhone": formData.optPhone, 
     }
-  }
+  };
   
   const anvilClient = new Anvil({ apiKey })
   const {
     statusCode,
     data
-  } = await anvilClient.fillPDF(pdfTemplateID, renewelData)
+  } = await anvilClient.fillPDF(pdfTemplateID, renewelData);
   
   if ( statusCode === 200 ) {
-    let FormData = require('form-data')
-    let formData = new FormData()
-    formData.append('image', data, {filename: 'filled.pdf'})
-    formData.append('folder', "pdf")
-    formData.append('userId', request.body.userId)
+    let FormData = require('form-data');
+    let formData = new FormData();
+    formData.append('image', data, {filename: 'filled.pdf'});
+    formData.append('folder', "pdf");
+    formData.append('userId', request.body.userId);
     fetch('https://us-central1-dmveasy-a82ea.cloudfunctions.net/uploadImage', {
       method: "POST",
       headers: {},
@@ -108,10 +108,9 @@ app.post('/anvil', async (request, response) => {
     })
     .then(response => response.json())
     .then(result => response.send(result))
-    .catch(error => response.send({errors: error}))
-  } 
-  
-})  
+    .catch(error => response.send({errors: error}));
+  };
+});
 
 
 
