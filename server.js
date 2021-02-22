@@ -1,32 +1,22 @@
 const app = require('express')();
-
 const PORT = process.env.PORT || 2021 ;
-
 const fetch = require('node-fetch')
-
 const cors = require('cors')
-
 const env = require('dotenv').config()
-
 const apiKey = process.env.API_KEY
-
 const Anvil = require('@anvilco/anvil');
-
 const pdfTemplateID = 'vXnoWI7yAjDEF9ABmzxK'; 
-
-app.use(cors())
-
-app.options('*', cors())
-
 const bodyParser = require('body-parser')
 
+app.use(cors())
+app.options('*', cors())
 app.use(bodyParser.json())
 
-app.get('/', (request, response) => {
-  response.json({message: "Sup, DMVeasy crew!"})
-});
-
 app.listen(PORT, () => console.log(`listening on port: ${PORT}`));
+
+app.get('/', (request, response) => {
+  response.json({message: "I'm a working server"})
+});
 
 app.post('/anvil', async (request, response) => {
   
@@ -104,13 +94,12 @@ app.post('/anvil', async (request, response) => {
     statusCode,
     data
   } = await anvilClient.fillPDF(pdfTemplateID, renewelData)
+  
   if ( statusCode === 200 ) {
     let FormData = require('form-data')
     let formData = new FormData()
     formData.append('image', data, {filename: 'filled.pdf'})
-    //this can be hardcoded as pdf or whatever folder name we want
     formData.append('folder', "pdf")
-    //need to have the userId sent in the request to make dynamic
     formData.append('userId', request.body.userId)
     fetch('https://us-central1-dmveasy-a82ea.cloudfunctions.net/uploadImage', {
       method: "POST",
@@ -121,6 +110,7 @@ app.post('/anvil', async (request, response) => {
     .then(result => response.send(result))
     .catch(error => response.send({errors: error}))
   } 
+  
 })  
 
 

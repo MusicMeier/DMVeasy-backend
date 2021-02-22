@@ -88,6 +88,7 @@ exports.getUser = functions.https.onRequest((request, response) => {
 });
 
 //will update whatever field you send in the request to a specific user
+//need to add more validations for this.
 exports.updateUser = functions.https.onRequest((request, response) => {
     cors(request, response, () => {
 
@@ -108,6 +109,6 @@ exports.updateUser = functions.https.onRequest((request, response) => {
             response.send("User not found");
         };
 
-        response.send("User updated, let me know if you want the userinfo here");
+        response.send("User updated");
     });
 });
