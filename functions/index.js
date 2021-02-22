@@ -7,16 +7,16 @@ const {
     updateUser
 } = require('./controllers/auth');
 const {
-    uploadImage,
-    getImage
+    uploadFile,
+    getFile
 } = require('./controllers/uploads')
 
 exports.signUp = signUpWithEmailPassword;
 exports.signIn = signInUserWithPasswordAndEmail;
 exports.getUser = getUser;
 exports.updateUser = updateUser;
-exports.uploadImage = uploadImage;
-exports.getImage = getImage;
+exports.uploadFile = uploadFile;
+exports.getFile = getFile;
 
 
 

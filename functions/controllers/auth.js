@@ -60,12 +60,8 @@ exports.signInUserWithPasswordAndEmail = functions.https.onRequest((request, res
             userId = userCredential.user.uid;
             return userCredential.user.getIdToken();
         })
-        .then((token) => {
-            response.send({token: token, userId: userId});
-        })
-        .catch((error) => {
-            response.send({errors: error});
-        });
+        .then((token) => response.send({token: token, userId: userId}))
+        .catch((error) => console.error(error));
     });
 });
 
@@ -83,12 +79,12 @@ exports.getUser = functions.https.onRequest((request, response) => {
             } else {
                 response.send("User not found")
             }
-        }).catch(error => response.send({errors: error}));
+        }).catch(error => console.error(error));
     });
 });
 
 //will update whatever field you send in the request to a specific user
-//need to add more validations for this.
+//need to add some validations for this.
 exports.updateUser = functions.https.onRequest((request, response) => {
     cors(request, response, () => {
 
@@ -105,10 +101,10 @@ exports.updateUser = functions.https.onRequest((request, response) => {
         let userRef = db.collection('users').doc(userId);
         if ( userRef ) {
             userRef.update(userInformation);
+            response.send("User updated");
         } else {
             response.send("User not found");
         };
-
-        response.send("User updated");
+        
     });
 });
